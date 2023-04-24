@@ -1,0 +1,159 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 100%;
+
+  & .col {
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
+
+      &_header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        padding: 0 8px;
+        min-width: 288px;
+
+        color: rgba(40, 43, 45, 0.92);
+        border-radius: 1px;
+
+        &_name {
+          display: flex;
+          flex-direction: row;
+          margin-left: 8px;
+
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 16px;
+
+          &_countTasks {
+            color: rgba(40, 43, 45, 0.6);
+            margin-left: 8px;
+          }
+        }
+
+        &_buttons {
+          display: flex;
+          flex-direction: row;
+        }
+
+        & img {
+          align-self: center;
+          margin: 8px;
+        }
+      }
+
+    &_item {
+      background: #FCFCFD;
+      border: 1px solid #DEDFE0;
+      margin-bottom: 8px;
+      padding: 12px;
+      cursor: pointer;
+      min-width: 288px;
+
+      position: relative;
+
+      &:hover {
+        background-color: #F4F5F5 !important;
+      }
+
+      &_title {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 16px;
+        color: rgba(40, 43, 45, 0.92);
+        margin-bottom: 8px;
+      }
+      &_time {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 71px;
+        margin-bottom: 9px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+
+        border-radius: 1px;
+      }
+
+      &_info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        &_author {
+          display: flex;
+          flex-direction: row;
+
+          font-style: normal;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 17px;
+          color: rgba(40, 43, 45, 0.6);
+        }
+
+        &_description {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          font-family: 'Inter';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 16px;
+          color: rgba(40, 43, 45, 0.6);
+
+          &_info {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-left: 14px;
+            & :nth-child(1) {
+              margin-right: 6px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.col_item_modal {
+  h6 {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+    margin-bottom: 5px;
+  }
+
+  &_worker {
+    margin-bottom: 16px;
+  }
+
+  &_datetime {
+    margin-bottom: 16px;
+  }
+}
+
+
+
+.activated {
+  visibility: visible !important;
+}

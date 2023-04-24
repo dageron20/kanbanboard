@@ -1,0 +1,17 @@
+module.exports = {
+    'blue-color': '#3498ff',
+    'blue-hover-color': '#2589f5',
+    'gray-color': '#575757',
+    'light-gray-color': '#d9d9d9',
+    'red-color': '#e5534b',
+    'black-12': 'rgb(0 0 0 / 12%)',
+    'black-06': 'rgb(0 0 0 / 6%)',
+    'side-nav-size': '50px',
+    'side-nav-expanded-size': '260px',
+    'row-hover-color': 'rgb(236 244 255)',
+    'bg-transition': 'background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1)',
+    'color-transition': 'color 0.2s cubic-bezier(0.3, 0, 0.5, 1)',
+    transition: '0.2s cubic-bezier(0.3, 0, 0.5, 1)',
+    'bg-gray-color': '#f7f7f7',
+    'green-color': '#00ca69',
+};

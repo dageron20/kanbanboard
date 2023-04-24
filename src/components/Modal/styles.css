@@ -1,0 +1,99 @@
+.custom-modal-main {
+  position: absolute;
+  z-index: 2;
+  width: 288px;
+  padding: 20px;
+  background: #FCFCFD;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  /* Border */
+  border: 1px solid #C8CACC;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 12%), 0 0 10px rgb(0 0 0 / 6%);
+}
+
+.custom-modal-main::before {
+   content: "";
+   position: absolute;
+
+   top: -20px;
+   left: 5px;
+   width: 16px;
+   height: 8px;
+   border: 10px solid transparent;
+   border-bottom: 10px solid #C8CACC;
+ }
+
+.custom-modal-main::after {
+   content: "";
+   position: absolute;
+
+   top: -19px;
+   left: 5px;
+   width: 16px;
+   height: 8px;
+   border: 10px solid transparent;
+   border-bottom: 10px solid #C8CACC;
+ }
+
+.custom-modal-main::after {
+   border-bottom: 10px solid rgb(252,252,253);
+   bottom: -19px;
+ }
+
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-modal-header__bth {
+  padding: 0;
+  border: none;
+  background: none;
+  /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;stroke:%23000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;%7D%3C/style%3E%3C/defs%3E%3Ctitle/%3E%3Cg id='cross'%3E%3Cline class='cls-1' x1='7' x2='25' y1='7' y2='25'/%3E%3Cline class='cls-1' x1='7' x2='25' y1='25' y2='7'/%3E%3C/g%3E%3C/svg%3E"); */
+  width: 18px;
+  height: 18px;
+}
+
+.custom-modal-header h6 {
+  flex: 1;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 19px;
+  color: rgba(40, 43, 45, 0.92);
+}
+.task-status {
+  display: flex;
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 0 10px 0 20px;
+}
+
+.task-status span {
+  flex: 1;
+  /* padding-left: 20px; */
+}
+.task-status input {
+  flex: 1;
+  padding: 0;
+  /* padding-left: 20px; */
+  max-width: 131px;
+  border: none;
+  outline: none;
+}
+.status_add_input {
+  border-radius: 10px;
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+  padding: 5px;
+  outline: none;
+  border: 1px solid #dddddd;
+}

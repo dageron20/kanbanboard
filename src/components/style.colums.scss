@@ -1,0 +1,58 @@
+.pending {
+  background: rgba(0, 117, 98, 0.15);
+}
+
+.ongoing {
+  background: #FFD796;
+}
+
+.work {
+  background: #9FBAEF;
+}
+
+.completed {
+  background: #FE989B;
+}
+
+.dropbox {
+  height: 100%;
+}
+
+
+.rs-picker {
+  &-toggle {
+    border-radius: 0 !important;
+    border: 1px solid #C8CACC !important;
+
+    &-active {
+      box-shadow:0 0 0 0 !important;
+    }
+  }
+  &:hover {
+  }
+  &-check {
+    &-menu {
+      border-radius: 0;
+    }
+  }
+
+  &-value {
+    &-item {
+      padding: 3px 10px;
+
+      background: #4B4F53;
+      color: rgba(252, 252, 253, 0.92);
+      font-weight: 700;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    &-count {
+      background-color: #4B4F53;
+      color: rgba(252, 252, 253, 0.92);
+    }
+  }
+}
+.rs-picker-toggle {
+
+}

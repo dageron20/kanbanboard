@@ -1,0 +1,8 @@
+declare module '*.png'
+declare module '*.svg'
+declare module '*.module.css'
+declare module '*.module.scss'
+declare module 'socket.io-client'
+declare module 'socket'
+declare module 'io-client'
+declare module 'react-beautiful-dnd'
