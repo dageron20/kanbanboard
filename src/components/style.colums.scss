@@ -52,7 +52,18 @@
       color: rgba(252, 252, 253, 0.92);
     }
   }
-}
-.rs-picker-toggle {
 
+  &-input {
+    border-radius: 0 !important;
+    border: 1px solid #C8CACC !important;
+
+    &-active {
+      box-shadow:0 0 0 0 !important;
+    }
+  }
+}
+
+.waiting {
+  opacity: .7;
+  opacity: .7;
 }

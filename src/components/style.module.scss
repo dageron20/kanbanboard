@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  height: 100%;
+  flex-grow: 1;
 
   & .col {
     display: flex;
@@ -149,6 +149,28 @@
 
   &_datetime {
     margin-bottom: 16px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+
+    & input {
+      border: 1px solid #C8CACC;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 17px;
+      padding: 7px 12px;
+      width: 100%;
+
+      &:focus-visible {
+        border: none;
+      }
+
+      color: rgba(40, 43, 45, 0.92);
+    }
   }
 }
 

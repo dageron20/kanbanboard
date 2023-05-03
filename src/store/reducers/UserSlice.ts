@@ -1,16 +1,13 @@
 import {IUser} from "../../types/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ITaskMember} from "../../types/ITask";
 
 interface UserState {
-    users: IUser[];
-    isLoading: boolean;
-    error: string;
+    users: ITaskMember[];
 }
 
 const initialState: UserState = {
     users: [],
-    isLoading: false,
-    error: '',
 }
 
 export const userSlice = createSlice({

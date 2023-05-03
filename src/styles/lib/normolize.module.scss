@@ -11,6 +11,7 @@
 html {
     line-height: 1.15; /* 1 */
     -webkit-text-size-adjust: 100%; /* 2 */
+    min-height: 100%;
 }
 
 /* Sections
@@ -371,9 +372,9 @@ html {
 
 html,
 body {
+    display: flex;
+    flex-grow: 1;
     width: 100%;
-    max-height: 100vh;
-    height: 100%;
 }
 
 body {

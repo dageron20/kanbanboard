@@ -20,11 +20,6 @@ let tasks = {
     pending: {
         title: "pending",
         items: [
-            {
-                id: fetchID(),
-                title: "Тестовая задача для Denis",
-                comments: [],
-            },
         ],
     },
     ongoing: {

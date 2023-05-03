@@ -1,10 +1,13 @@
 import React, {useState} from "react";
 import TooltipModal from "../Modal";
 import styles from "../style.module.scss";
-import {CheckPicker} from "rsuite";
+import {CheckPicker, InputPicker} from "rsuite";
 import union from "../../asset/resourse/Union.png";
 import clip from "../../asset/resourse/clip.png";
 import {Draggable} from "react-beautiful-dnd";
+import {ITaskState} from "../../types/ITask";
+import {useAppDispatch} from "../../hooks/redux";
+import {setCategory, setDateTime, setMembers} from "../../store/reducers/TaskSlice";
 
 interface Task {
     item: any;
@@ -29,6 +32,21 @@ const data2 = [{
     value: "val3"
 },]
 
+const dataCategory = [
+    {
+      id: 1,
+      name: 'pending',
+      label: 'Наразобранные задачи',
+      value: 'pending'
+    }, {
+        id: 2,
+            name: 'pending',
+        label: 'Наразобранные задачи',
+        value: 'pending'
+    }
+
+]
+
 const getItemStyle = (draggableStyle: any, isDragging: any) => (
     {
         background: isDragging ? '#E6F6F1' : '#FCFCFD',
@@ -37,10 +55,55 @@ const getItemStyle = (draggableStyle: any, isDragging: any) => (
     }
 );
 
-
 const Task: React.FC<Task> = ({item, index, title}) => {
+    const [updatedUsers, setUpdatedUsers] = useState<string[]>()
+    const [updatedCategory, setUpdatedCategory] = useState<string>()
+    const [updatedDatetime, setUpdatedDatetime] = useState<number>()
+    const [formattedDateTime, setFormattedDateTime] = useState<string>()
+    const dispatch = useAppDispatch();
+
+    const setMembersOnTask = (id: string, state: string, value: string[]) => {
+        setUpdatedUsers(value);
+        dispatch(setMembers(
+            {taskId: id,
+            columnId: state,
+            member: value}
+        ));
+    }
+
+    const setCategoryOnTask = (id: string, state: string, value: string) => {
+        setUpdatedCategory(value);
+        dispatch(setCategory(
+            {taskId: id,
+                columnId: state,
+                category: value}
+        ));
+    }
+
+    const setDatetimeOnTask = (id: string, state: string, event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDate = event.target.value;
+        const date = new Date(inputDate);
+        const milliseconds = date.getTime();
+        console.log(state)
+
+        if (isNaN(date.getTime())) {
+            console.log('Ошибка даты')
+        }
+
+        const formattedDate = new Date(milliseconds).toISOString().slice(0, 10);
+        setFormattedDateTime(formattedDate);
+        setUpdatedDatetime(milliseconds);
+        dispatch(setDateTime(
+            {taskId: id,
+                columnId: state,
+                dateTime: milliseconds}
+        ));
+    }
+
+
+
     return (
-        <Draggable key={item.id} draggableId={item.id} index={index}>
+        <Draggable  key={item.id} draggableId={item.id} index={index}>
             {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined; draggableProps: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>; dragHandleProps: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>; }, snapshot: { isDragging: any; }) => (
                 <TooltipModal
                     title={'Расстановка отряда'}
@@ -48,15 +111,32 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                         <div className={styles.col_item_modal}>
                             <div className={styles.col_item_modal_worker}>
                                 <h6>Исполнители</h6>
-                                <CheckPicker data={data2} appearance="default" placeholder="Default" style={{ width: 248 }} />
+                                <CheckPicker
+                                    value={updatedUsers}
+                                    data={data2}
+                                    onChange={(e) => setMembersOnTask(item.id, item.state, e)}
+                                    appearance="default"
+                                    placeholder="Выберите пользователей"
+                                    block
+                                />
                             </div>
                             <div className={`${styles.col_item_modal_datetime}`}>
                                 <h6>Крайний срок</h6>
-                                <input type="date" />
+                                <input
+                                    type="date"
+                                    value={formattedDateTime ? formattedDateTime : ''}
+                                    onChange={(e) => setDatetimeOnTask(item.id, item.state, e)}
+                                />
                             </div>
                             <div className={styles.col_item_modal_category}>
                                 <h6>Категория</h6>
-                                <input type="text" />
+                                <InputPicker
+                                    value={updatedCategory}
+                                    data={data2}
+                                    placeholder="Выберите категорию"
+                                    onChange={(e) => setCategoryOnTask(item.id, item.state, e)}
+                                    style={{  }}
+                                    block />
                             </div>
                         </div>
                     }
@@ -70,14 +150,15 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                             snapshot.isDragging
                         )}
                         className={styles.col_item}
+                        id={item.id}
                     >
 
                         <h3 className={styles.col_item_title}>
-                            {item.title}
+                            {item.name}
                         </h3>
-                        <div className={`${styles.col_item_time} ${title.toLowerCase()}`}>Без срока</div>
+                        <div className={`${styles.col_item_time} ${title.toLowerCase()}`}>{item.timeframe == 'Test' ? 'Без срока' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(item.timeframe)}</div>
                         <div className={styles.col_item_info}>
-                            <div className={styles.col_item_info_author}>Петров А.А. и еще 3</div>
+                            <div className={styles.col_item_info_author}>{item.members}</div>
                             <div className={styles.col_item_info_description}>
                                 <div className={styles.col_item_info_description_info}>
                                     <img src={union} alt="" />

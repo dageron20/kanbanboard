@@ -4,17 +4,20 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {ColumHeader} from "../ColumHeader/ColumHeader";
 import {Task} from "../Task/Task";
 import styled from "styled-components";
+import {ITask} from "../../types/ITask";
 
 interface ColumnProps {
+    id: string;
     title: string;
-    items: any[];
+    label: string;
+    items: ITask[];
     draggingIndex: any;
 }
 
-const Colum: React.FC<ColumnProps> = ({title, items}) => {
+const Colum: React.FC<ColumnProps> = ({id, title, label, items}) => {
     return (
         <div className={styles.col}>
-            <ColumHeader title={title} />
+            <ColumHeader title={title} items={items} label={label} />
             <Droppable droppableId={title}>
                 {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined; droppableProps: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>; placeholder: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, snapshot: any) => (
                     <div
@@ -23,8 +26,8 @@ const Colum: React.FC<ColumnProps> = ({title, items}) => {
                         {...provided.droppableProps}
 
                     >
-                        {items[1].items.map((item: any, index: any) => (
-                            <Task item={item} index={index} title={title}/>
+                        {items.map((item: any, index: any) => (
+                             <Task item={item.task} index={index} title={title} key={item.task.id}/>
                         ))}
                         {snapshot.isDraggingOver && (
                             <div style={{ height: '4px', backgroundColor: '#50BFA8' }} />

@@ -24,6 +24,20 @@ export interface ITask {
     };
 }
 
+export interface IColumn {
+    id: string;
+    title: string;
+    label: string;
+    items: ITask[];
+}
+
+export interface ITasks {
+    pending: IColumn;
+    ongoing: IColumn;
+    work: IColumn;
+    completed: IColumn;
+}
+
 export interface ITaskState {
     begin: number,
     end: number,

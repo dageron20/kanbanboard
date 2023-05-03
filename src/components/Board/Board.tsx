@@ -7,8 +7,9 @@ import socketIO from "socket.io-client";
 import {Colum} from "../Colum/Colum";
 import {addTask} from '../../store/reducers/TaskSlice';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {moveTask} from '../../store/reducers/TaskSlice';
 
-const socket = socketIO.connect("http://localhost:4000");
+//const socket = socketIO.connect("http://localhost:4000");
 
 const Board: React.FC = (props) => {
     const [tasks, setTasks] = useState({});
@@ -49,51 +50,71 @@ const Board: React.FC = (props) => {
                 id: fetchID(),
                 members: [],
                 name: "Test",
-                state: "Test",
+                state: "pending",
                 timeframe: "Test",
                 type: "discus"
             }
         };
         dispatch(addTask(taskName));
         event.currentTarget.reset();
-        console.log(tasksi);
     }
 
 
-    useEffect(() => {
-        function fetchTasks() {
-            fetch("http://localhost:4000/api")
-                .then((res) => res.json())
-                .then((data) => setTasks(data));
+    // useEffect(() => {
+    //     function fetchTasks() {
+    //         fetch("http://localhost:4000/api")
+    //             .then((res) => res.json())
+    //             .then((data) => setTasks(data));
+    //     }
+    //     fetchTasks();
+    // }, []);
+
+    // useEffect(() => {
+    //     socket.on("tasks", (data: React.SetStateAction<{}>) => {
+    //         setTasks(data);
+    //     });
+    // }, [socket]);
+
+
+    const canMove = (source: string, destination: string) => {
+        if (source === 'pending' && destination === 'ongoing' || source === 'ongoing' && destination === 'pending') {
+            return true;
         }
-        fetchTasks();
-    }, []);
-
-    useEffect(() => {
-        socket.on("tasks", (data: React.SetStateAction<{}>) => {
-            setTasks(data);
-        });
-    }, [socket]);
-
-    useEffect(() => {
-        socket.on("tasks", (data: React.SetStateAction<{}>) => {
-            setTasks(data);
-        });
-    }, [socket]);
+        if (source === 'ongoing' && destination === 'work' || source === 'work' && destination === 'ongoing') {
+            return true;
+        }
+        if (source === 'work' && destination === 'completed' || source === 'completed' && destination === 'work') {
+            return true;
+        }
+        return false;
+    };
 
     // @ts-ignore
-    const handleDragEnd = ({ destination, source }) => {
-        if (!destination) return;
-        if (
-            destination.index === source.index &&
-            destination.droppableId === source.droppableId
-        )
+    const handleDragEnd = (result: DropResult) => {
+        const { source, destination, draggableId } = result;
+        console.log(draggableId)
+        if (!destination) {
             return;
+        }
+        const task = document.getElementById(draggableId);
+        if (canMove(source.droppableId, destination.droppableId)) {
+            // задержка в 5 секунд
+            task?.classList.add('waiting'); // добавляем класс
+            setTimeout(() => {
+                dispatch(moveTask({ source: source.droppableId, destination: destination.droppableId, taskId: draggableId }));
+                task?.classList.remove('waiting'); // удаляем класс после неудачного перемещения
+            }, 2000);
+        } else {
+            // задержка в 5 секунд
+            task?.classList.add('waiting'); // добавляем класс
+            setTimeout(() => {
+                alert('Невозможно переместить элемент в данный столбец')
+                task?.classList.remove('waiting'); // удаляем класс после неудачного перемещения
+            }, 2000);
 
-        socket.emit("taskDragged", {
-            source,
-            destination,
-        });
+        }
+        // @ts-ignore
+
     };
 
     const [draggingIndex, setDraggingIndex] = useState(-1);
@@ -117,8 +138,14 @@ const Board: React.FC = (props) => {
                     <button type="submit">Add Task</button>
                 </form>
                 <DragDropContext onDragEnd={handleDragEnd} onDragUpdate={onDragUpdate}>
-                    {Object.entries(tasks).map((task:any) => (
-                        <Colum key={task[1].title} title={task[1].title} items={task} draggingIndex={draggingIndex}/>
+                    {/*{Object.entries(tasks).map((task:any) => (*/}
+                    {/*    <Colum key={task[1].title} title={task[1].title} items={task} draggingIndex={draggingIndex}/>*/}
+                    {/*))}*/}
+                    {tasksi.map((task: any) => (
+                        Object.entries(task).map((task2: any) => (
+                            <Colum id={task2[1].id} title={task2[1].title} label={task2[1].label} items={task2[1].items} draggingIndex={draggingIndex} key={task2[1].id} />
+                        ))
+                        // <Colum title={task2[1].title} items={task2[1].items} draggingIndex={draggingIndex} key={task.title} />
                     ))}
                 </DragDropContext>
             </div>
