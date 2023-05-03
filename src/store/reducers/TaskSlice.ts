@@ -12,10 +12,10 @@ interface TaskState {
 const initialState: TaskState = {
     tasksi: [
         {
-            pending: { id: fetchID(), title: 'pending', label: 'Неразобранные задачи', items: [] },
-            ongoing: { id: fetchID(), title: 'ongoing', label: 'В планах', items: [] },
-            work: { id: fetchID(), title: 'work', label: 'В работе', items: [] },
-            completed: { id: fetchID(), title: 'completed', label: 'Выполнено', items: [] },
+            failed: { id: fetchID(), title: 'failed', label: 'Неразобранные задачи', items: [] },
+            awaiting: { id: fetchID(), title: 'awaiting', label: 'В планах', items: [] },
+            running: { id: fetchID(), title: 'running', label: 'В работе', items: [] },
+            succeed: { id: fetchID(), title: 'succeed', label: 'Выполнено', items: [] },
         },
     ],
     isLoading: false,
@@ -27,7 +27,7 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action: PayloadAction<ITask>) => {
-            state.tasksi[0].pending.items.push(action.payload)
+            state.tasksi[0].failed.items.push(action.payload)
         },
         setMembers:(state, action: PayloadAction<{ taskId: string, columnId: string, member: string[],  }>) => {
             const { taskId, member, columnId } = action.payload;
@@ -36,7 +36,7 @@ export const taskSlice = createSlice({
 
             if (taskIndex !== null ) {
                 const task = columnToUpdate.items[taskIndex];
-                task.task.members.push(member);
+                task.task.members = member;
             }
         },
         setDateTime:(state, action: PayloadAction<{taskId: string, columnId: string, dateTime: number}>) => {
@@ -51,12 +51,14 @@ export const taskSlice = createSlice({
         setCategory:(state, action: PayloadAction<{taskId: string, columnId: string, category: string}>) => {
             const { taskId, columnId, category } = action.payload;
             const columnToUpdate = state.tasksi[0][columnId];
+            const destinationColumn = state.tasksi[0][category];
             const taskIndex = columnToUpdate.items.findIndex((task) => task.task.id === taskId);
             if (taskIndex !== null ) {
-                const task = columnToUpdate.items[taskIndex];
+                //const task = columnToUpdate.items[taskIndex];
+                const task = columnToUpdate.items.splice(taskIndex, 1)[0];
                 task.task.state = category;
+                destinationColumn.items.push(task);
             }
-
         },
         moveTask: (state, action: PayloadAction<{source: string, destination: string, taskId: string}>) => {
             const { source, destination, taskId } = action.payload;
@@ -66,6 +68,7 @@ export const taskSlice = createSlice({
 
             if (taskIndex !== -1) {
                 const task = sourceColumn.items.splice(taskIndex, 1)[0];
+                task.task.state = destination
                 destinationColumn.items.push(task);
             }
         }

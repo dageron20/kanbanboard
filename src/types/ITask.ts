@@ -32,10 +32,10 @@ export interface IColumn {
 }
 
 export interface ITasks {
-    pending: IColumn;
-    ongoing: IColumn;
-    work: IColumn;
-    completed: IColumn;
+    failed: IColumn;
+    awaiting: IColumn;
+    running: IColumn;
+    succeed: IColumn;
 }
 
 export interface ITaskState {

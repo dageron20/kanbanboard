@@ -1,16 +1,16 @@
-.pending {
+.failed {
   background: rgba(0, 117, 98, 0.15);
 }
 
-.ongoing {
+.awaiting {
   background: #FFD796;
 }
 
-.work {
+.running {
   background: #9FBAEF;
 }
 
-.completed {
+.succeed {
   background: #FE989B;
 }
 

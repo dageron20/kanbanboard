@@ -35,16 +35,25 @@ const data2 = [{
 const dataCategory = [
     {
       id: 1,
-      name: 'pending',
+      name: 'failed',
       label: 'Наразобранные задачи',
-      value: 'pending'
+      value: 'failed'
     }, {
         id: 2,
-            name: 'pending',
-        label: 'Наразобранные задачи',
-        value: 'pending'
+        name: 'awaiting',
+        label: 'В планах',
+        value: 'awaiting'
+    }, {
+        id: 3,
+        name: 'running',
+        label: 'В работе',
+        value: 'running'
+    }, {
+        id: 4,
+        name: 'succeed',
+        label: 'Выполнено',
+        value: 'succeed'
     }
-
 ]
 
 const getItemStyle = (draggableStyle: any, isDragging: any) => (
@@ -61,6 +70,8 @@ const Task: React.FC<Task> = ({item, index, title}) => {
     const [updatedDatetime, setUpdatedDatetime] = useState<number>()
     const [formattedDateTime, setFormattedDateTime] = useState<string>()
     const dispatch = useAppDispatch();
+
+    console.log(updatedUsers);
 
     const setMembersOnTask = (id: string, state: string, value: string[]) => {
         setUpdatedUsers(value);
@@ -84,7 +95,6 @@ const Task: React.FC<Task> = ({item, index, title}) => {
         const inputDate = event.target.value;
         const date = new Date(inputDate);
         const milliseconds = date.getTime();
-        console.log(state)
 
         if (isNaN(date.getTime())) {
             console.log('Ошибка даты')
@@ -132,7 +142,7 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                                 <h6>Категория</h6>
                                 <InputPicker
                                     value={updatedCategory}
-                                    data={data2}
+                                    data={dataCategory}
                                     placeholder="Выберите категорию"
                                     onChange={(e) => setCategoryOnTask(item.id, item.state, e)}
                                     style={{  }}
@@ -158,7 +168,17 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                         </h3>
                         <div className={`${styles.col_item_time} ${title.toLowerCase()}`}>{item.timeframe == 'Test' ? 'Без срока' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(item.timeframe)}</div>
                         <div className={styles.col_item_info}>
-                            <div className={styles.col_item_info_author}>{item.members}</div>
+                            <div className={styles.col_item_info_author}>{item.members.length > 0 && (
+                                <>
+                                    {data2.find((user) => user.value === item.members[0])?.label}
+                                    {item.members.length > 1 && (
+                                        <>
+                                            {" "}
+                                            и еще {item.members.length - 1}
+                                        </>
+                                    )}
+                                </>
+                            )}</div>
                             <div className={styles.col_item_info_description}>
                                 <div className={styles.col_item_info_description_info}>
                                     <img src={union} alt="" />

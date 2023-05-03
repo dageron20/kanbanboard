@@ -17,6 +17,7 @@ const Board: React.FC = (props) => {
 
     const {tasksi} = useAppSelector(state => state.taskReducer)
     const dispatch = useAppDispatch();
+    console.log(tasksi)
 
     const fetchID = () => Math.random().toString(36).substring(2, 10);
 
@@ -49,8 +50,8 @@ const Board: React.FC = (props) => {
                 },
                 id: fetchID(),
                 members: [],
-                name: "Test",
-                state: "pending",
+                name: "Тестовая задача ID-" + fetchID(),
+                state: "failed",
                 timeframe: "Test",
                 type: "discus"
             }
@@ -77,13 +78,13 @@ const Board: React.FC = (props) => {
 
 
     const canMove = (source: string, destination: string) => {
-        if (source === 'pending' && destination === 'ongoing' || source === 'ongoing' && destination === 'pending') {
+        if (source === 'failed' && destination === 'awaiting' || source === 'awaiting' && destination === 'failed') {
             return true;
         }
-        if (source === 'ongoing' && destination === 'work' || source === 'work' && destination === 'ongoing') {
+        if (source === 'awaiting' && destination === 'running' || source === 'running' && destination === 'awaiting') {
             return true;
         }
-        if (source === 'work' && destination === 'completed' || source === 'completed' && destination === 'work') {
+        if (source === 'running' && destination === 'succeed' || source === 'succeed' && destination === 'running') {
             return true;
         }
         return false;
@@ -134,7 +135,6 @@ const Board: React.FC = (props) => {
         <>
             <div className={styles.container}>
                 <form onSubmit={handleAddTask}>
-                    <input type="text" name="taskName" />
                     <button type="submit">Add Task</button>
                 </form>
                 <DragDropContext onDragEnd={handleDragEnd} onDragUpdate={onDragUpdate}>
