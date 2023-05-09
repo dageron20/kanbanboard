@@ -1,33 +1,84 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styles from "../style.module.scss";
 import "rsuite/dist/rsuite.min.css";
 import "../style.colums.scss";
 import { DragDropContext } from "react-beautiful-dnd";
-import socketIO from "socket.io-client";
 import {Colum} from "../Colum/Colum";
-import {addTask} from '../../store/reducers/TaskSlice';
+import {addTask, setDateTime} from '../../store/reducers/TaskSlice';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {moveTask} from '../../store/reducers/TaskSlice';
+import {RightPanel} from "../RightPanel";
+import HeaderPanel from "../HeaderPanel/HeaderPanel";
+import {PanelContentLayout} from "../PanelContent";
+import {Footer} from "../FooterPanel";
+import newTask from "../../asset/resourse/addTask.svg";
+import clsx from "clsx";
+import {CheckPicker} from "rsuite";
 
-//const socket = socketIO.connect("http://localhost:4000");
 
 const Board: React.FC = (props) => {
-    const [tasks, setTasks] = useState({});
-    const [isOpenModal, setIsOpen] = useState(false);
-
-    const {tasksi} = useAppSelector(state => state.taskReducer)
+    const {allTasks} = useAppSelector(state => state.taskReducer)
     const dispatch = useAppDispatch();
-    console.log(tasksi)
-
     const fetchID = () => Math.random().toString(36).substring(2, 10);
+
+    const [nameNewTask, setNameNewTask] = useState<string>();
+
+    const handleTaskNameChange = (event: { target: { value: React.SetStateAction<string | undefined>; }; }) => {
+        setNameNewTask(event.target.value);
+    };
+
+    const handleFileChange = (event: { target: { files: any[]; }; }) => {
+        const newFile = event.target.files[0];
+        setFile(newFile);
+
+    }
+
+    const [updatedDatetimeNewTask, setUpdatedDatetimeNewTask] = useState<number>()
+    const [formattedDateTimeNewTask, setFormattedDateTimeNewTask] = useState<string>()
+    const [file, setFile] = useState(null);
+    const setDatetimeOnTask = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputDate = event.target.value;
+        const date = new Date(inputDate);
+        const milliseconds = date.getTime();
+        if (isNaN(date.getTime())) {
+            console.log('Ошибка даты')
+        }
+        const formattedDate = new Date(milliseconds).toISOString().slice(0, 10);
+        setFormattedDateTimeNewTask(formattedDate);
+        setUpdatedDatetimeNewTask(milliseconds);;
+    }
+
+    const data2 = [{
+        id: 1,
+        name: "Petr",
+        label: "Петров В.А.",
+        value: "val1",
+    }, {
+        id: 2,
+        name: "Den",
+        label: "Иванов В.В.",
+        value: "val2",
+    },{
+        id: 3,
+        name: "a",
+        label: "Кузнецов В.А.",
+        value: "val3"
+    },]
 
     const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const formData = new FormData();
+        // @ts-ignore
+        formData.append('file', file);
+
+
+
+
         const taskName = {
             task: {
                 author: {
                     module: {
-                        alias: "proverka",
+                        alias: "Application",
                     },
                     user: {
                         id: fetchID(),
@@ -42,40 +93,24 @@ const Board: React.FC = (props) => {
                             id: fetchID(),
                         },
                         payload: {
-                            files: [],
-                            value: "Test",
+                            files: [formData.get('file')],
+                            value: "No values",
                         },
-                        type: "Test",
+                        type: "Application",
                     }
                 },
                 id: fetchID(),
-                members: [],
-                name: "Тестовая задача ID-" + fetchID(),
+                members: updatedUsersAdd,
+                name: nameNewTask,
                 state: "failed",
-                timeframe: "Test",
+                timeframe: updatedDatetimeNewTask,
                 type: "discus"
             }
         };
         dispatch(addTask(taskName));
         event.currentTarget.reset();
+        setNameNewTask('');
     }
-
-
-    // useEffect(() => {
-    //     function fetchTasks() {
-    //         fetch("http://localhost:4000/api")
-    //             .then((res) => res.json())
-    //             .then((data) => setTasks(data));
-    //     }
-    //     fetchTasks();
-    // }, []);
-
-    // useEffect(() => {
-    //     socket.on("tasks", (data: React.SetStateAction<{}>) => {
-    //         setTasks(data);
-    //     });
-    // }, [socket]);
-
 
     const canMove = (source: string, destination: string) => {
         if (source === 'failed' && destination === 'awaiting' || source === 'awaiting' && destination === 'failed') {
@@ -112,10 +147,7 @@ const Board: React.FC = (props) => {
                 alert('Невозможно переместить элемент в данный столбец')
                 task?.classList.remove('waiting'); // удаляем класс после неудачного перемещения
             }, 2000);
-
         }
-        // @ts-ignore
-
     };
 
     const [draggingIndex, setDraggingIndex] = useState(-1);
@@ -129,28 +161,78 @@ const Board: React.FC = (props) => {
         }
     }
 
-
     // @ts-ignore
+    const [updatedUsersAdd, setUpdatedUsersAdd] = useState<string[]>([])
     return (
         <>
             <div className={styles.container}>
-                <form onSubmit={handleAddTask}>
-                    <button type="submit">Add Task</button>
-                </form>
                 <DragDropContext onDragEnd={handleDragEnd} onDragUpdate={onDragUpdate}>
-                    {/*{Object.entries(tasks).map((task:any) => (*/}
-                    {/*    <Colum key={task[1].title} title={task[1].title} items={task} draggingIndex={draggingIndex}/>*/}
-                    {/*))}*/}
-                    {tasksi.map((task: any) => (
-                        Object.entries(task).map((task2: any) => (
-                            <Colum id={task2[1].id} title={task2[1].title} label={task2[1].label} items={task2[1].items} draggingIndex={draggingIndex} key={task2[1].id} />
+                    {allTasks.map((task: any) => (
+                        Object.entries(task).map((tasks: any) => (
+                            <Colum id={tasks[1].id}
+                                   title={tasks[1].title}
+                                   label={tasks[1].label}
+                                   items={tasks[1].items}
+                                   draggingIndex={draggingIndex}
+                                   key={tasks[1].id}
+                            />
                         ))
-                        // <Colum title={task2[1].title} items={task2[1].items} draggingIndex={draggingIndex} key={task.title} />
                     ))}
                 </DragDropContext>
             </div>
+            <RightPanel>
+                <HeaderPanel
+                    name="Новая задача"
+                />
+                <PanelContentLayout>
+                    <div className={styles.PanelTaskName}>
+                        <div>Название</div>
+                        <input
+                            type="text"
+                            onChange={handleTaskNameChange}
+                            value={nameNewTask}
+                            placeholder="Название задачи"/>
+                    </div>
+                    <div>
+                        <div>Исполнители</div>
+                        <CheckPicker
+                            value={updatedUsersAdd}
+                            data={data2}
+                            onChange={(e) => setUpdatedUsersAdd(e)}
+                            appearance="default"
+                            placeholder="Выберите пользователей"
+                            block
+                        />
+                    </div>
+                    <div className={styles.PanelTaskName}>
+                        <div>Крайний срок</div>
+                        <input
+                            type="date"
+                            value={formattedDateTimeNewTask ? formattedDateTimeNewTask : ''}
+                            onChange={(e) => setDatetimeOnTask(e)}
+                        />
+                    </div>
+                    <div className={styles.PanelTaskName}>
+                        <div>Добавить файл</div>
+                        <input
+                            type="file"
+                            onChange={handleFileChange}
+                        />
+                    </div>
+                </PanelContentLayout>
+                <div
+                    className={clsx('Footer')}
+                >
+                    <form onSubmit={handleAddTask}>
+                        <button
+                            className={clsx('Button')}
+                        >
+                            Поставить задачу
+                        </button>
+                    </form>
+                </div>
+            </RightPanel>
         </>
     )
 }
-
 export {Board}

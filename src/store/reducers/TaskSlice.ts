@@ -4,13 +4,13 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const fetchID = () => Math.random().toString(36).substring(2, 10);
 
 interface TaskState {
-    tasksi: ITasks[];
+    allTasks: ITasks[];
     isLoading: boolean;
     error: string;
 }
 
 const initialState: TaskState = {
-    tasksi: [
+    allTasks: [
         {
             failed: { id: fetchID(), title: 'failed', label: 'Неразобранные задачи', items: [] },
             awaiting: { id: fetchID(), title: 'awaiting', label: 'В планах', items: [] },
@@ -27,12 +27,12 @@ export const taskSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action: PayloadAction<ITask>) => {
-            state.tasksi[0].failed.items.push(action.payload)
+            state.allTasks[0].failed.items.push(action.payload)
         },
         setMembers:(state, action: PayloadAction<{ taskId: string, columnId: string, member: string[],  }>) => {
             const { taskId, member, columnId } = action.payload;
-            const columnToUpdate = state.tasksi[0][columnId];
-            const taskIndex = columnToUpdate.items.findIndex((task) => task.task.id === taskId);
+            const columnToUpdate = state.allTasks[0][columnId];
+            const taskIndex = columnToUpdate.items.findIndex((task: { task: { id: string; }; }) => task.task.id === taskId);
 
             if (taskIndex !== null ) {
                 const task = columnToUpdate.items[taskIndex];
@@ -41,8 +41,8 @@ export const taskSlice = createSlice({
         },
         setDateTime:(state, action: PayloadAction<{taskId: string, columnId: string, dateTime: number}>) => {
             const { taskId, columnId, dateTime } = action.payload;
-            const columnToUpdate = state.tasksi[0][columnId];
-            const taskIndex = columnToUpdate.items.findIndex((task) => task.task.id === taskId);
+            const columnToUpdate = state.allTasks[0][columnId];
+            const taskIndex = columnToUpdate.items.findIndex((task: { task: { id: string; }; }) => task.task.id === taskId);
             if (taskIndex !== null ) {
                 const task = columnToUpdate.items[taskIndex];
                 task.task.timeframe = dateTime;
@@ -50,11 +50,10 @@ export const taskSlice = createSlice({
         },
         setCategory:(state, action: PayloadAction<{taskId: string, columnId: string, category: string}>) => {
             const { taskId, columnId, category } = action.payload;
-            const columnToUpdate = state.tasksi[0][columnId];
-            const destinationColumn = state.tasksi[0][category];
-            const taskIndex = columnToUpdate.items.findIndex((task) => task.task.id === taskId);
+            const columnToUpdate = state.allTasks[0][columnId];
+            const destinationColumn = state.allTasks[0][category];
+            const taskIndex = columnToUpdate.items.findIndex((task: { task: { id: string; }; }) => task.task.id === taskId);
             if (taskIndex !== null ) {
-                //const task = columnToUpdate.items[taskIndex];
                 const task = columnToUpdate.items.splice(taskIndex, 1)[0];
                 task.task.state = category;
                 destinationColumn.items.push(task);
@@ -62,10 +61,9 @@ export const taskSlice = createSlice({
         },
         moveTask: (state, action: PayloadAction<{source: string, destination: string, taskId: string}>) => {
             const { source, destination, taskId } = action.payload;
-            const sourceColumn = state.tasksi[0][source];
-            const destinationColumn = state.tasksi[0][destination];
-            const taskIndex = sourceColumn.items.findIndex((task) => task.task.id === taskId);
-
+            const sourceColumn = state.allTasks[0][source];
+            const destinationColumn = state.allTasks[0][destination];
+            const taskIndex = sourceColumn.items.findIndex((task: { task: { id: string; }; }) => task.task.id === taskId);
             if (taskIndex !== -1) {
                 const task = sourceColumn.items.splice(taskIndex, 1)[0];
                 task.task.state = destination

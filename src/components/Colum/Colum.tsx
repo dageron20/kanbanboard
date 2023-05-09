@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import styles from "../style.module.scss";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {Droppable } from "react-beautiful-dnd";
 import {ColumHeader} from "../ColumHeader/ColumHeader";
 import {Task} from "../Task/Task";
-import styled from "styled-components";
 import {ITask} from "../../types/ITask";
 
 interface ColumnProps {
@@ -19,12 +18,16 @@ const Colum: React.FC<ColumnProps> = ({id, title, label, items}) => {
         <div className={styles.col}>
             <ColumHeader title={title} items={items} label={label} />
             <Droppable droppableId={title}>
-                {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined; droppableProps: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>; placeholder: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, snapshot: any) => (
+                {(provided: {
+                    innerRef: React.LegacyRef<HTMLDivElement> |
+                        undefined; droppableProps: JSX.IntrinsicAttributes
+                        & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>;
+                        placeholder: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> |
+                            React.ReactFragment | React.ReactPortal | null | undefined; }, snapshot: any) => (
                     <div
                         className="dropbox"
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-
                     >
                         {items.map((item: any, index: any) => (
                              <Task item={item.task} index={index} title={title} key={item.task.id}/>
@@ -39,5 +42,4 @@ const Colum: React.FC<ColumnProps> = ({id, title, label, items}) => {
         </div>
     );
 };
-
 export {Colum};

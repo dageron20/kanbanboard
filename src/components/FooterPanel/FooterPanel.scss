@@ -1,0 +1,29 @@
+.Footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  box-sizing: border-box;
+  min-height: 48px;
+  max-height: 48px;
+  padding: 0 16px;
+  border-top: 1px solid #dedfe0;
+  margin-bottom: 0;
+
+  .Button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    width: 128px;
+    min-width: max-content;
+    padding: 12px;
+    background-color: #007562;
+    border: none;
+    outline: none;
+
+    &:hover {
+      background-color: #008f75;
+    }
+  }
+}

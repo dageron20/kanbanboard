@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import TooltipModal from "../Modal";
+import Modal from "../Modal";
 import styles from "../style.module.scss";
 import {CheckPicker, InputPicker} from "rsuite";
 import union from "../../asset/resourse/Union.png";
@@ -81,7 +81,6 @@ const Task: React.FC<Task> = ({item, index, title}) => {
             member: value}
         ));
     }
-
     const setCategoryOnTask = (id: string, state: string, value: string) => {
         setUpdatedCategory(value);
         dispatch(setCategory(
@@ -90,16 +89,13 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                 category: value}
         ));
     }
-
     const setDatetimeOnTask = (id: string, state: string, event: React.ChangeEvent<HTMLInputElement>) => {
         const inputDate = event.target.value;
         const date = new Date(inputDate);
         const milliseconds = date.getTime();
-
         if (isNaN(date.getTime())) {
             console.log('Ошибка даты')
         }
-
         const formattedDate = new Date(milliseconds).toISOString().slice(0, 10);
         setFormattedDateTime(formattedDate);
         setUpdatedDatetime(milliseconds);
@@ -115,8 +111,8 @@ const Task: React.FC<Task> = ({item, index, title}) => {
     return (
         <Draggable  key={item.id} draggableId={item.id} index={index}>
             {(provided: { innerRef: React.LegacyRef<HTMLDivElement> | undefined; draggableProps: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>; dragHandleProps: JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>; }, snapshot: { isDragging: any; }) => (
-                <TooltipModal
-                    title={'Расстановка отряда'}
+                <Modal
+                    title={item.name}
                     modalBody={
                         <div className={styles.col_item_modal}>
                             <div className={styles.col_item_modal_worker}>
@@ -145,8 +141,8 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                                     data={dataCategory}
                                     placeholder="Выберите категорию"
                                     onChange={(e) => setCategoryOnTask(item.id, item.state, e)}
-                                    style={{  }}
-                                    block />
+                                    block
+                                />
                             </div>
                         </div>
                     }
@@ -166,9 +162,16 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                         <h3 className={styles.col_item_title}>
                             {item.name}
                         </h3>
-                        <div className={`${styles.col_item_time} ${title.toLowerCase()}`}>{item.timeframe == 'Test' ? 'Без срока' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(item.timeframe)}</div>
+                        <div className={`${styles.col_item_time} ${title.toLowerCase()}`}>
+                            {item.timeframe == 'Test' ? 'Без срока' :
+                                new Intl.DateTimeFormat(
+                                    'ru-RU',
+                                    { day: 'numeric', month: 'long' })
+                                    .format(item.timeframe)}
+                        </div>
                         <div className={styles.col_item_info}>
-                            <div className={styles.col_item_info_author}>{item.members.length > 0 && (
+                            <div className={styles.col_item_info_author}>
+                                {item.members.length > 0 && (
                                 <>
                                     {data2.find((user) => user.value === item.members[0])?.label}
                                     {item.members.length > 1 && (
@@ -178,20 +181,21 @@ const Task: React.FC<Task> = ({item, index, title}) => {
                                         </>
                                     )}
                                 </>
-                            )}</div>
+                            )}
+                            </div>
                             <div className={styles.col_item_info_description}>
                                 <div className={styles.col_item_info_description_info}>
                                     <img src={union} alt="" />
-                                    <span>2</span>
+                                    <span></span>
                                 </div>
                                 <div className={styles.col_item_info_description_info}>
                                     <img src={clip} alt="" />
-                                    <span>6</span>
+                                    <span>{(item.discus.description.payload.files.length)}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </TooltipModal>
+                </Modal>
             )}
         </Draggable>
     )

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
-import Modal, { PositionProp, ModalBodyProps } from './Modal'
+import ModalSetts, { PositionProp, ModalBodyProps } from './ModalSetts'
 
-type TooltipModalProps = {
+type ModalProps = {
   children: React.ReactNode
   modalBody?: React.ReactElement<ModalBodyProps, any>
   titlestyle?: React.CSSProperties
@@ -13,7 +13,7 @@ type TooltipModalProps = {
   width?: number
 }
 
-const TooltipModal = (props: TooltipModalProps) => {
+const Modal = (props: ModalProps) => {
   const blockRef = useRef<HTMLDivElement | null>(null)
   const modalRef = useRef<HTMLDivElement | null>(null)
 
@@ -94,7 +94,7 @@ const TooltipModal = (props: TooltipModalProps) => {
         {props.children}
       </div>
       {blockRect && (
-        <Modal
+        <ModalSetts
           isOpened={isOpened}
           close={close}
           ref={modalRef}
@@ -113,4 +113,4 @@ const TooltipModal = (props: TooltipModalProps) => {
   )
 }
 
-export default TooltipModal
+export default Modal

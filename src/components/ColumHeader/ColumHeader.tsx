@@ -18,7 +18,6 @@ const ColumHeader: React.FC<ColumHeader> = ({title, items, label}) => {
             </div>
             <div className={styles.col_header_buttons}>
                 <img src={defaultButton} alt="" />
-                <img src={defaultButton} alt="" />
             </div>
         </div>
     )

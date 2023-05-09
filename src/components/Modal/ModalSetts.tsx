@@ -52,7 +52,7 @@ type Position = {
   right?: number
 }
 
-const Modal = React.forwardRef(
+const ModalSetts = React.forwardRef(
   (props: ModalProps, ref: ForwardedRef<HTMLDivElement | null>) => {
     const [position, setPosition] = useState<Position | null>(null)
     const mainRef = useRef<HTMLDivElement | null>(null)
@@ -253,4 +253,4 @@ const Modal = React.forwardRef(
   },
 )
 
-export default Modal
+export default ModalSetts

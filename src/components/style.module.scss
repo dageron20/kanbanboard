@@ -1,3 +1,90 @@
+@import 'vars.modules';
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-Light.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-Light.woff") format("woff"),
+  url("../styles/fonts/src/Inter-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-Regular.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-Regular.woff") format("woff"),
+  url("../styles/fonts/src/Inter-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-Italic.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-Italic.woff") format("woff"),
+  url("../styles/fonts/src/Inter-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-Medium.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-Medium.woff") format("woff"),
+  url("../styles/fonts/src/Inter-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-MediumItalic.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-MediumItalic.woff") format("woff"),
+  url("../styles/fonts/src/Inter-MediumItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-SemiBold.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-SemiBold.woff") format("woff"),
+  url("../styles/fonts/src/Inter-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  font-style: normal;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../styles/fonts/src/Inter-Bold.woff2") format("woff2"),
+  url("../styles/fonts/src/Inter-Bold.woff") format("woff"),
+  url("../styles/fonts/src/Inter-Bold.ttf") format("truetype");
+}
+
+
 .container {
   display: flex;
   flex-direction: row;
@@ -18,7 +105,7 @@
         padding: 0 8px;
         min-width: 288px;
 
-        color: rgba(40, 43, 45, 0.92);
+        color: $colorText-header-colum;
         border-radius: 1px;
 
         &_name {
@@ -33,7 +120,7 @@
           line-height: 16px;
 
           &_countTasks {
-            color: rgba(40, 43, 45, 0.6);
+            color: $colorText-header-colum;
             margin-left: 8px;
           }
         }
@@ -50,8 +137,8 @@
       }
 
     &_item {
-      background: #FCFCFD;
-      border: 1px solid #DEDFE0;
+      background: $background-item;
+      border: 1px solid $color-border;
       margin-bottom: 8px;
       padding: 12px;
       cursor: pointer;
@@ -60,7 +147,7 @@
       position: relative;
 
       &:hover {
-        background-color: #F4F5F5 !important;
+        background-color: $background-item-hover !important;
       }
 
       &_title {
@@ -69,7 +156,7 @@
         font-weight: 600;
         font-size: 13px;
         line-height: 16px;
-        color: rgba(40, 43, 45, 0.92);
+        color: $colorText-header-colum;
         margin-bottom: 8px;
       }
       &_time {
@@ -102,7 +189,7 @@
           font-weight: 400;
           font-size: 13px;
           line-height: 17px;
-          color: rgba(40, 43, 45, 0.6);
+          color: $colorText-header-colum;
         }
 
         &_description {
@@ -115,7 +202,7 @@
           font-weight: 400;
           font-size: 12px;
           line-height: 16px;
-          color: rgba(40, 43, 45, 0.6);
+          color: $colorText-header-colum;
 
           &_info {
             display: flex;
@@ -156,7 +243,7 @@
     line-height: 17px;
 
     & input {
-      border: 1px solid #C8CACC;
+      border: 1px solid $border-input;
       font-family: 'Inter';
       font-style: normal;
       font-weight: 400;
@@ -166,16 +253,45 @@
       width: 100%;
 
       &:focus-visible {
-        border: none;
+        outline: none;
       }
 
-      color: rgba(40, 43, 45, 0.92);
+      color: $colorText-header-colum;
     }
   }
 }
 
-
-
 .activated {
   visibility: visible !important;
+}
+
+.PanelTaskName {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 17px;
+
+  & input {
+    border: 1px solid $border-input;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 17px;
+    padding: 7px 12px;
+    width: 100%;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    color: $colorText-header-colum;
+
+    &:focus {
+
+    }
+  }
 }
